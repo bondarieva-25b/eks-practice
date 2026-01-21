@@ -1,0 +1,16 @@
+name: Terraform Multi-account Deploy workflow
+on:
+  push:
+    branches:
+      - main
+  
+jobs:
+  terraform-job:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v3
+
+    - run: |
+        cd root-module/
+        ls
+        terraform init
