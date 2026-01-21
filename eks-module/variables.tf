@@ -25,3 +25,7 @@ variable "asg_size_max" {
 variable "asg_size_min" {
     type = number
 }
+
+variable "admin_role_arn" {
+  type = string
+}
