@@ -25,5 +25,6 @@ jobs:
         role-session-name: GitHubActionsTerraformSession
 
     - run: |
+        cd root-module/
         terraform init
         terraform plan -var-file=dev.tfvars
