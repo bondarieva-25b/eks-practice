@@ -25,7 +25,5 @@ jobs:
         role-session-name: GitHubActionsTerraformSession
 
     - run: |
-        cd root-module/
-        ls
-        aws sts get-caller-identity
         terraform init
+        terraform plan -var-file=dev.tfvars
