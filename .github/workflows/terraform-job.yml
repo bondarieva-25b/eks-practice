@@ -28,5 +28,5 @@ jobs:
     - name: Deploy Terraform Code
       working-directory: root-module
       run: |
-        terraform init -backend-config="practice-eks-058316962389-tfstate-staging" -input=false
+        terraform init -backend-config="bucket=practice-eks-058316962389-tfstate-staging" -input=false
         terraform plan -var-file=staging.tfvars -input=false
