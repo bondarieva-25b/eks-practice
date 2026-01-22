@@ -3,14 +3,29 @@ on:
   push:
     branches:
       - main
+
+permissions:
+  id-token: write
+  contents: read
   
 jobs:
   terraform-job:
     runs-on: ubuntu-22.04
+
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout/Clone repository
+      uses: actions/checkout@v3
+
+    # Configure AWS Credentials
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v5.1.1
+      with:
+        aws-region: us-east-1
+        role-to-assume: arn:aws:iam::450558842433:role/github-actions-iam-role-dev
+        role-session-name: GitHubActionsTerraformSession
 
     - run: |
         cd root-module/
         ls
+        aws sts get-caller-identity
         terraform init
