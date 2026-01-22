@@ -21,10 +21,12 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v5.1.1
       with:
         aws-region: us-east-1
-        role-to-assume: arn:aws:iam::450558842433:role/github-actions-iam-role-dev
+        #role-to-assume: arn:aws:iam::450558842433:role/github-actions-iam-role-dev
+        role-to-assume: arn:aws:iam::058316962389:role/github-actions-iam-role-staging
         role-session-name: GitHubActionsTerraformSession
 
-    - run: |
-        cd root-module/
+    - name: Deploy Terraform Code
+      working-directory: root-module
+      run: |
         terraform init
-        terraform plan -var-file=dev.tfvars
+        terraform plan -var-file=staging.tfvars -input=false
