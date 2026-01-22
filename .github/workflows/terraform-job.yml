@@ -10,6 +10,7 @@ permissions:
   
 jobs:
   terraform-job:
+    environment: dev
     runs-on: ubuntu-22.04
 
     steps:
@@ -21,12 +22,11 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v5.1.1
       with:
         aws-region: us-east-1
-        #role-to-assume: arn:aws:iam::450558842433:role/github-actions-iam-role-dev
-        role-to-assume: arn:aws:iam::058316962389:role/github-actions-iam-role-staging
+        role-to-assume: ${{ vars.IAM_ROLE }}
         role-session-name: GitHubActionsTerraformSession
 
     - name: Deploy Terraform Code
       working-directory: root-module
       run: |
-        terraform init -backend-config="bucket=practice-eks-058316962389-tfstate-staging" -input=false
-        terraform plan -var-file=staging.tfvars -input=false
+        terraform init -backend-config="bucket=${{ vars.TF_STATE_BUCKET }}" -input=false
+        terraform plan -var-file=${{ vars.STAGE }}.tfvars -input=false
