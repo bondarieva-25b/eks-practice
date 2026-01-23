@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - main
+      - develop
+      - 'feature/**'
 
 permissions:
   id-token: write
@@ -13,9 +15,13 @@ jobs:
     environment: |
       ${{ github.ref == 'refs/heads/main' && 'production' || 
        github.ref == 'refs/heads/develop' && 'staging' || 
-       startsWith(github.ref, 'refs/heads/feature/**') && 'dev'
+       startsWith(github.ref, 'refs/heads/feature/') && 'dev'
       }}
     runs-on: ubuntu-22.04
+
+    defaults:
+      run:
+        working-directory: root-module/
 
     steps:
     - name: Checkout/Clone repository
@@ -30,12 +36,10 @@ jobs:
         role-session-name: GitHubActionsTerraformSession
 
     - name: Terraform Init
-      working-directory: root-module
       run:
         terraform init -backend-config="bucket=${{ vars.TF_STATE_BUCKET }}" -input=false
 
 
     - name: Terraform Plan
-      working-directory: root-module
       run: 
         terraform plan -var-file=${{ vars.STAGE }}.tfvars -input=false
