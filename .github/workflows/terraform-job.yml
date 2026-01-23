@@ -29,8 +29,13 @@ jobs:
         role-to-assume: ${{ vars.IAM_ROLE }}
         role-session-name: GitHubActionsTerraformSession
 
-    - name: Deploy Terraform Code
+    - name: Terraform Init
       working-directory: root-module
-      run: |
+      run:
         terraform init -backend-config="bucket=${{ vars.TF_STATE_BUCKET }}" -input=false
+
+
+    - name: Terraform Plan
+      working-directory: root-module
+      run: 
         terraform plan -var-file=${{ vars.STAGE }}.tfvars -input=false
