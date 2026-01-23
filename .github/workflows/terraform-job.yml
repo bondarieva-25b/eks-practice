@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - main
+      - develop
+      - 'feature/**'
 
 permissions:
   id-token: write
@@ -13,7 +15,7 @@ jobs:
     environment: |
       ${{ github.ref == 'refs/heads/main' && 'production' || 
        github.ref == 'refs/heads/develop' && 'staging' || 
-       startsWith(github.ref, 'refs/heads/feature/**') && 'dev'
+       startsWith(github.ref, 'refs/heads/feature/') && 'dev'
       }}
     runs-on: ubuntu-22.04
 
